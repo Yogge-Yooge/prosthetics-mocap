@@ -1,10 +1,6 @@
-
-
-
-
+path = "H:\\mocap\\csv_converted_files\\subject_1\\"
 temp = list.files(path = "H:\\mocap\\csv_converted_files\\subject_1\\",pattern="*")
 
-#Data Preprocess steps
 process = function(ss)
 {
 ss_1 = ss[,-1]
@@ -51,6 +47,9 @@ i = i + 1
 }
 
 
+ 
+
+
 qq = do.call(rbind,ddat_files)
 
 
@@ -62,7 +61,53 @@ qq[,i] = as.numeric(as.character(qq[,i]))
 i = i + 1 
 }
 
+head(qq)
+
 qqqq = colnames(qq)[2]
+
+
+summary(lm(qq[1:3000,2] ~ (.) -frame.1-frame - C7_X  , data=qq[1:3000,]))
+
+summary(step((lm(qq[1:3000,3] ~ (.) -frame.1-frame - C7_Y  , data=qq[1:3000,]))
+,direction = "both"))
+
+
+lm(eruptions ~ waiting, data=faithful)
+
+
+dim(qq)
+cbind(colnames(qq))
+
+123/3
+
+
+head(qq[,8])
+
+
+qq = qq[,-8]
+
+cbind(colnames(qq))
+
+
+head(qq)
+str(qq)
+
+cbind(colnames(qq))
+
+summary(step((lm(qq[1:3000,"C7_Y"] ~ (.) -frame - C7_Y  , data=qq[1:3000,]))
+,direction = "both"))
+
+marker = read.csv("marker_label.csv",stringsAsFactors = FALSE)
+
+head(marker)
+
+marker[,1] = gsub("  ","",marker[,1])
+
+c(marker[1,1],
+
+dim(marker)
+
+colnames(qq)
 
 
 ddat_2 <- as.list(rep("", 42))
@@ -87,11 +132,16 @@ markers_detail = as.data.frame(markers_detail)
 
 colnames(markers_detail) = c("marker_label","detail_marker","orientation")
 
+unique(markers_detail[,2])
 
 markers_detail[,1] = as.character(markers_detail[,1])
 markers_detail[,2] = as.character(markers_detail[,2])
 markers_detail[,3] = as.character(markers_detail[,3])
 
+
+colnames(qq)
+
+head(markers_detail)
 
 markers_detail[28,1] = "T10_X"
 markers_detail[29,1] = "T10_Y"
@@ -128,17 +178,36 @@ leftvsright = round(cor(left_side_data[,-c(1,38)],right_side_data[,-c(1,38)]),1)
 right_corr = round(cor(right_side_data[,-c(1,38)]),1)
 
 
+head(center_side_data)
+head(left_side_data)
+head(right_side_data)
+
+
+
+
+dim(right_side_data)
+cbind(colnames(right_side_data ))
+
+
+
+
 install.packages("readxl")
 install.packages("tidyverse")
 install.packages("xgboost")
 install.packages("caret")
+
 
 library(readxl)
 library(tidyverse)
 library(xgboost)
 library(caret)
 
+
+
 #qq = subset.matrix(all_data,all_data$file_index == "01_02")
+
+
+
 
 center_side_data = all_data[,c("frame","STRN_X","STRN_Y","STRN_Z","T10_X","T10_Y","T10_Z","CLAV_X","CLAV_Y","CLAV_Z","C7_X","C7_Y","C7_Z","file_index")]
 
@@ -155,9 +224,7 @@ library(caret)
 library(e1071)
 library(xgboost)
 
-head(left_side_data)
 
-dim(left_side_data)
 
 ddat = rep(list(),37)
 
@@ -248,12 +315,12 @@ i = i+ 1
 
 aaa = do.call(cbind,eer)
 
-
 write.csv(aaa,"02_03.csv")
 
 
 
 aaa_1 = aaa[,seq(3,108,3)]
+
 
 
 colnames(aaa_1) = colnames(left_side_data)[2:37]
@@ -266,7 +333,9 @@ write.csv(aaa_1,"all_markers_residual.csv")
 
 pred =  aaa[,seq(2,107,3)]
 
+dim(pred)
 
+head(pred)
 
 colnames(pred) = colnames(left_side_data)[2:37]
 
@@ -275,6 +344,10 @@ all_left_pred = cbind(pred,subset.matrix(center_side_data,center_side_data$file_
 
 
 write.csv(all_left_pred,"left_sidepredicted_values") 
+
+
+
+
 
 
 
