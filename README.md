@@ -40,4 +40,4 @@ Machine Learning Methodology:-
 In this project, we are validating the human motion by testing around 97 sample c3d files and validating it on the 98th sample. 
 The co-ordinates of the right side markers and the center markers of the body is used to predict the markers of the left side. 
 
-
+Link to the dataset that has been used in this project dataset :- https://drive.google.com/open?id=1P4JEwggtCG7fT484ajxs0L9nW-EBwoqN 
