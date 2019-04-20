@@ -31,3 +31,13 @@ Orthogonal View of the Prediction of File name 02_02 under subject 1
 
 ![Alt Text](https://github.com/Yogge-Yooge/prosthetics-mocap/blob/master/02_02_predicted_orthogonal_n1.gif)
 
+
+Actual Skeleton view of the Motion 
+
+![Alt Text](https://i.imgur.com/T5JPKtH.gif)
+
+Machine Learning Methodology:- 
+In this project, we are validating the human motion by testing around 97 sample c3d files and validating it on the 98th sample. 
+The co-ordinates of the right side markers and the center markers of the body is used to predict the markers of the left side. 
+
+
