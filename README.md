@@ -3,7 +3,7 @@ A Proof of concept on how Prosthetics can be improved with the help of Motion ca
 
 The Idea behind this project is to demonstrate how existing Prosthetics can be improved by using IMU motion capture and Machine learning. 
 
-IMU mocap[Motion capture] captures the human motion in a catesian co-ordinate plane which is represted by 4 dimensions X,Y,Z and the 4th dimension is time. Based on these information, IMU's can help us track human motions and visualize them in 4 dimensions. 
+IMU mocap[Motion capture] captures the human motion in a cartesian co-ordinate plane which is represted by 4 dimensions X,Y,Z and the 4th dimension is time. Based on these information, IMU's can help us track human motions and visualize them in 4 dimensions. 
 
 In this project we have used the motion capture data in a c3d format as this format is predominantly used in forms of Gait analysis. 
 
