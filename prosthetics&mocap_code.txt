@@ -1,0 +1,296 @@
+
+
+
+
+temp = list.files(path = "H:\\mocap\\csv_converted_files\\subject_1\\",pattern="*")
+
+#Data Preprocess steps
+process = function(ss)
+{
+ss_1 = ss[,-1]
+nm = seq(1,121,3)
+ddat <- as.list(rep("", 41))
+cln = colnames(ss_1)
+for( i in 1:length(nm))
+{
+ddat[[i]] = cbind(c(
+paste(cln[nm[i]],"_X",collapse="",sep=""),
+paste(cln[nm[i]],"_Y",collapse="",sep=""),
+paste(cln[nm[i]],"_Z",collapse="",sep="")
+))
+i=i+1
+}
+cnls = do.call(rbind,ddat)
+cnls_1 =  strsplit(cnls,".",fixed=TRUE)
+ddat <- as.list(rep("", 41))
+for( i in 1:length(cnls))
+{
+qqwe  = data.frame(cnls_1[i])
+ddat[[i]]= ifelse(dim(qqwe)[1] == 1 , as.character(qqwe[1,1]),as.character(qqwe[2,1]))
+i=i+1
+}
+cnls = do.call(rbind,ddat)
+
+colnames(ss) = c("frame",cnls )
+ss = ss[3:dim(ss)[1],]
+ss = as.data.frame(ss)
+ss <- sapply(ss,as.numeric )
+ss = ss[,c('frame','C7_X','C7_Y','C7_Z','CLAV_X','CLAV_Y','CLAV_Z','frame','LANK_X','LANK_Y','LANK_Z','LBHD_X','LBHD_Y','LBHD_Z','LBWT_X','LBWT_Y','LBWT_Z','LELB_X','LELB_Y','LELB_Z','LFHD_X','LFHD_Y','LFHD_Z','LFIN_X','LFIN_Y','LFIN_Z','LFRM_X','LFRM_Y','LFRM_Z','LFWT_X','LFWT_Y','LFWT_Z','LHEE_X','LHEE_Y','LHEE_Z','LKNE_X','LKNE_Y','LKNE_Z','LMT5_X','LMT5_Y','LMT5_Z','LSHN_X','LSHN_Y','LSHN_Z','LSHO_X','LSHO_Y','LSHO_Z','LTHI_X','LTHI_Y','LTHI_Z','LTOE_X','LTOE_Y','LTOE_Z','LUPA_X','LUPA_Y','LUPA_Z','LWRA_X','LWRA_Y','LWRA_Z','LWRB_X','LWRB_Y','LWRB_Z','RANK_X','RANK_Y','RANK_Z','RBAC_X','RBAC_Y','RBAC_Z','RBHD_X','RBHD_Y','RBHD_Z','RBWT_X','RBWT_Y','RBWT_Z','RELB_X','RELB_Y','RELB_Z','RFHD_X','RFHD_Y','RFHD_Z','RFIN_X','RFIN_Y','RFIN_Z','RFRM_X','RFRM_Y','RFRM_Z','RFWT_X','RFWT_Y','RFWT_Z','RHEE_X','RHEE_Y','RHEE_Z','RKNE_X','RKNE_Y','RKNE_Z','RMT5_X','RMT5_Y','RMT5_Z','RSHN_X','RSHN_Y','RSHN_Z','RSHO_X','RSHO_Y','RSHO_Z','RTHI_X','RTHI_Y','RTHI_Z','RTOE_X','RTOE_Y','RTOE_Z','RUPA_X','RUPA_Y','RUPA_Z','RWRA_X','RWRA_Y','RWRA_Z','RWRB_X','RWRB_Y','RWRB_Z','STRN_X','STRN_Y','STRN_Z','T10_X','T10_Y','T10_Z')] 
+print(ss)
+}
+
+ddat_files <- as.list(rep("", length(temp)))
+
+for(i in 1:length(temp))
+{
+  tryCatch({
+ddat_files[[i]] = cbind(process(read.csv(paste(path,temp[i],sep="",collapse=""),stringsAsFactors=FALSE)),temp[i])
+colnames(ddat_files[[i]])[dim(ddat_files[[i]])[2]] = "file_index"
+i = i + 1
+  }, error=function(e){})
+}
+
+
+qq = do.call(rbind,ddat_files)
+
+
+qq = data.frame(qq)
+
+for(i in 1:(dim(qq)[2]-1))
+{
+qq[,i] = as.numeric(as.character(qq[,i]))
+i = i + 1 
+}
+
+qqqq = colnames(qq)[2]
+
+
+ddat_2 <- as.list(rep("", 42))
+
+for( i in 1:42)
+{
+ddat_2[[i]] = cbind(c(
+paste(marker[i,1],"_X",collapse="",sep=""),
+paste(marker[i,1],"_Y",collapse="",sep=""),
+paste(marker[i,1],"_Z",collapse="",sep="")
+),marker[i,2],marker[i,3])
+i=i+1
+}
+
+
+
+markers_detail = do.call(rbind,ddat_2)
+
+head(markers_detail)
+
+markers_detail = as.data.frame(markers_detail)
+
+colnames(markers_detail) = c("marker_label","detail_marker","orientation")
+
+
+markers_detail[,1] = as.character(markers_detail[,1])
+markers_detail[,2] = as.character(markers_detail[,2])
+markers_detail[,3] = as.character(markers_detail[,3])
+
+
+markers_detail[28,1] = "T10_X"
+markers_detail[29,1] = "T10_Y"
+markers_detail[30,1] = "T10_Z"
+
+center = subset.matrix(markers_detail,markers_detail$orientation =="center")
+left = subset.matrix(markers_detail,markers_detail$orientation =="left_side")
+right = subset.matrix(markers_detail,markers_detail$orientation =="right_side")
+
+all_data = qq 
+
+qq = subset.matrix(all_data,all_data$file_index == "02_02")
+
+
+
+
+center_side_data = qq[,c("frame","STRN_X","STRN_Y","STRN_Z","T10_X","T10_Y","T10_Z","CLAV_X","CLAV_Y","CLAV_Z","C7_X","C7_Y","C7_Z","file_index")]
+
+left_side_data = qq[,c("frame","LBWT_X","LBWT_Y","LBWT_Z","LFWT_X","LFWT_Y","LFWT_Z","LTHI_X","LTHI_Y","LTHI_Z","LKNE_X","LKNE_Y","LKNE_Z","LSHN_X","LSHN_Y","LSHN_Z","LBHD_X","LBHD_Y","LBHD_Z","LFHD_X","LFHD_Y","LFHD_Z","LANK_X","LANK_Y","LANK_Z","LHEE_X","LHEE_Y","LHEE_Z","LTOE_X","LTOE_Y","LTOE_Z","LMT5_X","LMT5_Y","LMT5_Z","LSHO_X","LSHO_Y","LSHO_Z"
+,"file_index")]
+
+
+
+right_side_data = qq[,c("frame","RBWT_X","RBWT_Y","RBWT_Z","RFWT_X","RFWT_Y","RFWT_Z","RTHI_X","RTHI_Y","RTHI_Z","RKNE_X","RKNE_Y","RKNE_Z","RSHN_X","RSHN_Y","RSHN_Z","RBHD_X","RBHD_Y","RBHD_Z","RFHD_X","RFHD_Y","RFHD_Z","RANK_X","RANK_Y","RANK_Z","RHEE_X","RHEE_Y","RHEE_Z","RTOE_X","RTOE_Y","RTOE_Z","RMT5_X","RMT5_Y","RMT5_Z","RSHO_X","RSHO_Y","RSHO_Z","file_index")]
+
+
+lf_cen = cor(center_side_data[,-c(1,14)],left_side_data[,-c(1,38)])
+
+rh_cen = cor(center_side_data[,-c(1,14)],right_side_data[,-c(1,38)])
+
+
+leftvsright = round(cor(left_side_data[,-c(1,38)],right_side_data[,-c(1,38)]),1)
+
+right_corr = round(cor(right_side_data[,-c(1,38)]),1)
+
+
+install.packages("readxl")
+install.packages("tidyverse")
+install.packages("xgboost")
+install.packages("caret")
+
+library(readxl)
+library(tidyverse)
+library(xgboost)
+library(caret)
+
+#qq = subset.matrix(all_data,all_data$file_index == "01_02")
+
+center_side_data = all_data[,c("frame","STRN_X","STRN_Y","STRN_Z","T10_X","T10_Y","T10_Z","CLAV_X","CLAV_Y","CLAV_Z","C7_X","C7_Y","C7_Z","file_index")]
+
+left_side_data = all_data[,c("frame","LBWT_X","LBWT_Y","LBWT_Z","LFWT_X","LFWT_Y","LFWT_Z","LTHI_X","LTHI_Y","LTHI_Z","LKNE_X","LKNE_Y","LKNE_Z","LSHN_X","LSHN_Y","LSHN_Z","LBHD_X","LBHD_Y","LBHD_Z","LFHD_X","LFHD_Y","LFHD_Z","LANK_X","LANK_Y","LANK_Z","LHEE_X","LHEE_Y","LHEE_Z","LTOE_X","LTOE_Y","LTOE_Z","LMT5_X","LMT5_Y","LMT5_Z","LSHO_X","LSHO_Y","LSHO_Z"
+,"file_index")]
+
+right_side_data = all_data[,c("frame","RBWT_X","RBWT_Y","RBWT_Z","RFWT_X","RFWT_Y","RFWT_Z","RTHI_X","RTHI_Y","RTHI_Z","RKNE_X","RKNE_Y","RKNE_Z","RSHN_X","RSHN_Y","RSHN_Z","RBHD_X","RBHD_Y","RBHD_Z","RFHD_X","RFHD_Y","RFHD_Z","RANK_X","RANK_Y","RANK_Z","RHEE_X","RHEE_Y","RHEE_Z","RTOE_X","RTOE_Y","RTOE_Z","RMT5_X","RMT5_Y","RMT5_Z","RSHO_X","RSHO_Y","RSHO_Z","file_index")]
+
+install.packages("magrittr") # only needed the first time you use it
+install.packages("dplyr")    # alternative installation of the %>%
+library(magrittr) # need to run every time you start R and want to use %>%
+library(dplyr)    # alternative, this also loads %>%
+library(caret)
+library(e1071)
+library(xgboost)
+
+head(left_side_data)
+
+dim(left_side_data)
+
+ddat = rep(list(),37)
+
+
+for(i in 2:37)
+{
+
+LBWT_X = cbind(left_side_data[,i], right_side_data,center_side_data)
+LBWT_X[,53] = as.character(LBWT_X[,53])
+
+LBWT_X = subset.matrix(LBWT_X,!is.na(LBWT_X[,2]))
+
+train = subset.matrix(LBWT_X,LBWT_X[,53] != "02_03")
+test  = subset.matrix(LBWT_X,LBWT_X[,53] == "02_03")
+
+train = train[,-c(2,39,40,53)]
+test = test[,-c(2,39,40,53)]
+
+colnames(train)[1] = colnames(left_side_data)[i]
+colnames(test)[1] = colnames(left_side_data)[i]
+
+coln = colnames(left_side_data)[i]
+
+X_train = xgb.DMatrix(as.matrix(train %>% select(-coln)))
+y_train = train[,coln]
+X_test = xgb.DMatrix(as.matrix(test %>% select(-coln)))
+y_test = test[,coln]
+
+xgb_trcontrol = trainControl(
+  method = "cv",
+  number = 5,  
+  allowParallel = TRUE,
+  verboseIter = FALSE,
+  returnData = FALSE
+)
+
+xgbGrid <- expand.grid(nrounds = c(100,200),  # this is n_estimators in the python code above
+                       max_depth = c(10, 15, 20, 25),
+                       colsample_bytree = seq(0.5, 0.9, length.out = 5),
+                       ## The values below are default values in the sklearn-api. 
+                       eta = 0.1,
+                       gamma=0,
+                       min_child_weight = 1,
+                       subsample = 1
+                      )
+
+xgb_model = train(
+  X_train, y_train,  
+  trControl = xgb_trcontrol,
+  tuneGrid = xgbGrid,
+  method = "xgbTree" )
+
+ddat[[i]] = predicted = predict(xgb_model, X_test)
+#residuals = y_test - predicted
+#RMSE = sqrt(mean(residuals^2))
+#cat('The root mean square error of the test data is ', round(RMSE,3),'\n')
+print(i)
+i = i + 1 
+}
+
+
+
+eer = rep(list(),37) 
+
+for( i in 2:37)
+{
+
+LBWT_X = cbind(left_side_data[,i], right_side_data,center_side_data)
+LBWT_X[,53] = as.character(LBWT_X[,53])
+
+LBWT_X = subset.matrix(LBWT_X,!is.na(LBWT_X[,2]))
+
+train = subset.matrix(LBWT_X,LBWT_X[,53] != "02_03")
+test  = subset.matrix(LBWT_X,LBWT_X[,53] == "02_03")
+
+train = train[,-c(2,39,40,53)]
+test = test[,-c(2,39,40,53)]
+
+
+aa = cbind(test[,i] , ddat[[i]],abs(test[,i] -  ddat[[i]]))
+colnames(aa)[1] = colnames(test[,i]) 
+colnames(aa)[2] = colnames(test[,i]) 
+eer[[i]]  =  aa
+ 
+i = i+ 1
+}
+
+
+aaa = do.call(cbind,eer)
+
+
+write.csv(aaa,"02_03.csv")
+
+
+
+aaa_1 = aaa[,seq(3,108,3)]
+
+
+colnames(aaa_1) = colnames(left_side_data)[2:37]
+
+
+write.csv(aaa_1,"all_markers_residual.csv")
+
+
+
+
+pred =  aaa[,seq(2,107,3)]
+
+
+
+colnames(pred) = colnames(left_side_data)[2:37]
+
+
+all_left_pred = cbind(pred,subset.matrix(center_side_data,center_side_data$file_index == "01_02") ,subset.matrix(right_side_data,right_side_data$file_index == "01_02"))
+
+
+write.csv(all_left_pred,"left_sidepredicted_values") 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
