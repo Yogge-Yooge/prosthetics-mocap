@@ -27,4 +27,7 @@ Perspective View of the Prediction of File name 02_02 under subject 1
 
 ![Alt Text](https://i.imgur.com/vxLWzP5.gif)
 
+Orthogonal View of the Prediction of File name 02_02 under subject 1 
+
+![Alt Text](https://github.com/Yogge-Yooge/prosthetics-mocap/blob/master/02_02_predicted_orthogonal_n1.gif)
 
