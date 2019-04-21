@@ -1,9 +1,14 @@
-# prosthetics-mocap
+# prosthetics-mocap-artificial_intelligence
 A Proof of concept on how Prosthetics can be improved with the help of Motion capture and Machine learning Algorithms
 
 The Idea behind this project is to demonstrate how existing Prosthetics can be improved by using IMU motion capture and Machine learning. 
+By using motion capture devices, we can capture the movements of healthy humans and train models to predict the possible movements of either the left leg or the right leg of a person who is either paraplegic/Amputee. This method ensures a totally solid and fluent movement prediction. This can be integrated with the current prosthetic devices to ensure a more safe and cost effective solution. It can be further enhanced by implementing more advanced object detection and spatial localisation algorithms. It can also be served for people who have complete leg amputated or people for someone who has been affected by paraplegia with a non-functional leg. 
+
+
 
 IMU mocap[Motion capture] captures the human motion in a cartesian co-ordinate plane which is represted by 4 dimensions X,Y,Z and the 4th dimension is time. Based on these information, IMU's can help us track human motions and visualize them in 4 dimensions. 
+
+
 
 In this project we have used the motion capture data in a c3d format as this format is predominantly used in forms of Gait analysis. 
 
