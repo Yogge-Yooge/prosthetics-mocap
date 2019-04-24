@@ -1,4 +1,4 @@
-# prosthetics-mocap-artificial_intelligence
+# Teaching AI to Walk through Artificial Intelligence 
 A Proof of concept on how Prosthetics can be improved with the help of Motion capture and Machine learning Algorithms
 
 The Idea behind this project is to demonstrate how existing Prosthetics can be improved by using IMU motion capture and Machine learning. 
